@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EquipEase - Home & Equipment Catalog</title>
+  
+  <!-- CSS Dependencies -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Contact & Auth Bar -->
+  <div class="bg-topbar-gradient text-white text-xs py-2 px-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+      <div class="d-flex align-items-center gap-4">
+        <span><i class="fa-solid fa-phone me-1"></i> +91 7894561239</span>
+        <span><i class="fa-solid fa-envelope me-1"></i> info@equipease.com</span>
+        
+      </div>
+      <div class="d-flex align-items-center gap-3 fw-semibold">
+        <button onclick="openAuthModal('login')" class="btn btn-link text-white text-decoration-none p-0 text-xs shadow-none"><i class="fa-solid fa-right-to-bracket me-1"></i> LOGIN</button>
+        <span>|</span>
+        <button onclick="openAuthModal('register')" class="btn btn-link text-white text-decoration-none p-0 text-xs shadow-none"><i class="fa-solid fa-user-plus me-1"></i> SIGNUP</button>
+        <span>|</span>
+        <a href="admin.html" class="btn btn-warning rounded-pill py-1 px-3 text-xs fw-bold text-brandRedDark border-0 text-decoration-none">
+          <i class="fa-solid fa-user-shield me-1"></i> ADMIN DASHBOARD
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="bg-white border-bottom border-orange-100 sticky-top shadow-sm">
+    <div class="container d-flex align-items-center justify-content-between" style="height: 80px;">
+      
+      <a href="index.html" class="d-flex align-items-center gap-3 text-decoration-none text-slate-900 group">
+        <div class="rounded-3 bg-gradient-brand d-flex align-items-center justify-content-center text-white shadow-sm" style="width: 48px; height: 48px; font-size: 1.5rem;">
+          <i class="fa-solid fa-tractor"></i>
+        </div>
+        <div>
+          <span class="fs-4 fw-bolder tracking-tight">EquipEase</span>
+          <span class="d-block text-brandOrange text-uppercase fw-bold tracking-widest" style="font-size: 10px;">Rental Management S/Y</span>
+        </div>
+      </a>
+
+      <nav class="d-none d-md-flex align-items-center gap-4 text-sm fw-bold text-uppercase tracking-wider text-slate-700">
+        <a href="index.html" class="text-brandRed text-decoration-none">Home</a>
+        
+        <div class="dropdown dropdown-hover position-relative">
+          <button class="btn btn-link text-slate-700 text-decoration-none p-0 d-flex align-items-center gap-1 shadow-none fw-bold text-uppercase tracking-wider text-sm">
+            Categories <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+          </button>
+          <div class="dropdown-menu shadow-lg border-orange-100 rounded-3 p-2 mt-2">
+            <a href="#catalog" onclick="filterCategory('All')" class="dropdown-item text-xs rounded">All Equipment</a>
+            <a href="#catalog" onclick="filterCategory('Agriculture')" class="dropdown-item text-xs rounded">Agriculture & Gardening</a>
+            <a href="#catalog" onclick="filterCategory('Photography')" class="dropdown-item text-xs rounded">Photography & Studio</a>
+            <a href="#catalog" onclick="filterCategory('AudioVisual')" class="dropdown-item text-xs rounded">Audio & Visual</a>
+            <a href="#catalog" onclick="filterCategory('Tools')" class="dropdown-item text-xs rounded">Power Tools</a>
+          </div>
+        </div>
+
+        <a href="dashboard.html" class="text-slate-700 text-decoration-none">My Bookings</a>
+        <a href="#contact-section" class="text-slate-700 text-decoration-none">Contact</a>
+      </nav>
+
+      <div class="d-flex align-items-center gap-3">
+        <button onclick="openBookingModal()" class="d-none d-sm-flex align-items-center gap-2 btn bg-gradient-brand text-white fw-bold text-xs text-uppercase tracking-wider rounded-pill px-4 py-2 shadow transition">
+          <i class="fa-solid fa-calendar-plus text-sm"></i> Rent Now
+        </button>
+        <button onclick="toggleMobileMenu()" class="d-md-none btn text-slate-700 fs-4 shadow-none border-0 p-0">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-menu" class="hidden bg-white border-bottom border-orange-100 px-3 py-3 fw-semibold text-sm d-md-none">
+      <div class="d-flex flex-column gap-2">
+        <a href="index.html" class="text-brandRed fw-bold text-decoration-none p-2">Home</a>
+        <a href="dashboard.html" class="text-slate-700 text-decoration-none p-2">My Bookings</a>
+        <a href="admin.html" class="text-brandOrange fw-bold text-decoration-none p-2">Admin Panel</a>
+        <button onclick="openAuthModal('login'); toggleMobileMenu()" class="btn btn-link text-start text-slate-700 text-decoration-none p-2">Login / Register</button>
+        <button onclick="openBookingModal(); toggleMobileMenu()" class="btn bg-brandRed text-white rounded p-2 fw-bold text-center">Book Equipment</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow-1">
+    
+    <!-- Hero Banner -->
+    <section class="bg-hero-gradient py-5 py-lg-5 px-3 text-center text-white position-relative overflow-hidden" style="min-height: 500px; display: flex; align-items: center;">
+      <div class="container position-relative z-1">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-10 col-lg-8">
+            <div class="d-inline-block bg-white bg-opacity-25 text-warning border border-light px-3 py-1 rounded-pill text-xs fw-bolder text-uppercase tracking-widest mb-3 shadow-sm" style="backdrop-filter: blur(8px);">
+              <i class="fa-solid fa-sparkles me-1"></i> Simplified Rental Platform
+            </div>
+            <h1 class="display-4 fw-bolder tracking-tight text-uppercase mb-4 text-shadow-sm">
+              WE SERVE HIGH QUALITY EQUIPMENT & TOOLS
+            </h1>
+            <p class="lead mb-4 fw-medium text-white-50 fs-6 fs-md-5">
+              Eliminate paperwork and double-bookings. Explore verified machinery, studio camera gear, and event audio-visual units available for flexible daily rentals.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+              <a href="#catalog" class="btn btn-warning text-brandRedDark fw-bolder rounded-pill px-5 py-3 text-sm text-uppercase tracking-wider shadow">
+                View Catalog
+              </a>
+              <button onclick="openBookingModal()" class="btn btn-outline-light fw-bold rounded-pill px-5 py-3 text-sm text-uppercase tracking-wider" style="backdrop-filter: blur(4px);">
+                Quick Booking Form
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Circular Feature Badges -->
+    <section class="py-5 bg-white border-bottom border-orange-100">
+      <div class="container">
+        <div class="row g-4 text-center">
+          <div class="col-6 col-md-3 d-flex flex-column align-items-center">
+            <div class="badge-icon-bg rounded-circle d-flex align-items-center justify-content-center text-brandRed fs-2 mb-3 shadow-sm border border-orange-200" style="width: 80px; height: 80px;">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <h4 class="fw-bolder text-xs text-uppercase tracking-wider text-slate-800 mb-1">Quick Delivery</h4>
+            <p class="text-slate-500 text-uppercase m-0" style="font-size: 10px;">ON-SITE TRANSPORT AVAILABLE</p>
+          </div>
+
+          <div class="col-6 col-md-3 d-flex flex-column align-items-center">
+            <div class="badge-icon-bg rounded-circle d-flex align-items-center justify-content-center text-brandOrange fs-2 mb-3 shadow-sm border border-orange-200" style="width: 80px; height: 80px;">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h4 class="fw-bolder text-xs text-uppercase tracking-wider text-slate-800 mb-1">100% Insured Gear</h4>
+            <p class="text-slate-500 text-uppercase m-0" style="font-size: 10px;">VERIFIED & SERVICED ITEMS</p>
+          </div>
+
+          <div class="col-6 col-md-3 d-flex flex-column align-items-center">
+            <div class="badge-icon-bg rounded-circle d-flex align-items-center justify-content-center text-brandRed fs-2 mb-3 shadow-sm border border-orange-200" style="width: 80px; height: 80px;">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <h4 class="fw-bolder text-xs text-uppercase tracking-wider text-slate-800 mb-1">Superior Quality</h4>
+            <p class="text-slate-500 text-uppercase m-0" style="font-size: 10px;">TESTED BEFORE DISPATCH</p>
+          </div>
+
+          <div class="col-6 col-md-3 d-flex flex-column align-items-center">
+            <div class="badge-icon-bg rounded-circle d-flex align-items-center justify-content-center text-brandOrange fs-2 mb-3 shadow-sm border border-orange-200" style="width: 80px; height: 80px;">
+              <i class="fa-solid fa-headset"></i>
+            </div>
+            <h4 class="fw-bolder text-xs text-uppercase tracking-wider text-slate-800 mb-1">24/7 Support</h4>
+            <p class="text-slate-500 text-uppercase m-0" style="font-size: 10px;">EXPERT HELPDESK ASSISTANCE</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Equipment Catalog Section -->
+    <section id="catalog" class="py-5 container">
+      <div class="text-center mb-5">
+        <h2 class="fs-1 fw-bolder text-slate-900 text-uppercase tracking-tight">Our Equipment Catalog</h2>
+        <p class="text-slate-500 text-sm mx-auto mb-3" style="max-width: 600px;">
+          Select from high-performance agricultural machinery, studio gear, and event tools with instant availability check.
+        </p>
+        <div class="bg-gradient-brand mx-auto rounded-pill" style="width: 100px; height: 6px;"></div>
+      </div>
+
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
+        <div class="d-flex flex-wrap justify-content-center gap-2" id="category-filters">
+          <button onclick="filterCategory('All')" class="cat-pill btn bg-brandRed text-white rounded-pill text-xs fw-bold text-uppercase tracking-wider px-4">All</button>
+          <button onclick="filterCategory('Agriculture')" class="cat-pill btn btn-light bg-white border-orange-200 text-slate-700 rounded-pill text-xs fw-bold text-uppercase tracking-wider px-4">Agriculture</button>
+          <button onclick="filterCategory('Photography')" class="cat-pill btn btn-light bg-white border-orange-200 text-slate-700 rounded-pill text-xs fw-bold text-uppercase tracking-wider px-4">Photography</button>
+          <button onclick="filterCategory('AudioVisual')" class="cat-pill btn btn-light bg-white border-orange-200 text-slate-700 rounded-pill text-xs fw-bold text-uppercase tracking-wider px-4">Audio & Visual</button>
+        </div>
+
+        <div class="position-relative" style="width: 100%; max-width: 300px;">
+          <input type="text" id="search-input" onkeyup="searchEquipment()" placeholder="Search equipment..." class="form-control rounded-pill border-orange-200 text-xs ps-5 py-2 shadow-sm">
+          <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y text-slate-400 text-xs ms-3"></i>
+        </div>
+      </div>
+
+      <div class="row g-4" id="equipment-grid">
+        <!-- JS Rendered Items -->
+      </div>
+    </section>
+
+    <!-- Metadata Card -->
+   
+
+  </main>
+
+  <!-- Modals -->
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="custom-modal-overlay hidden">
+    <div class="bg-white w-100 rounded-3 shadow-lg overflow-hidden border border-orange-100 position-relative" style="max-width: 450px;">
+      <div class="bg-topbar-gradient text-white p-4 d-flex justify-content-between align-items-center">
+        <div>
+          <h3 class="fs-5 fw-bolder text-uppercase tracking-tight mb-0" id="auth-modal-title">Account Access</h3>
+          <p class="text-xs text-white-50 mb-0">EquipEase Rental Portal</p>
+        </div>
+        <button onclick="closeAuthModal()" class="btn-close btn-close-white shadow-none"></button>
+      </div>
+
+      <div class="d-flex border-bottom border-orange-100 bg-orange-50">
+        <button id="tab-btn-login" onclick="toggleAuthTab('login')" class="btn flex-fill py-3 rounded-0 text-xs fw-bold text-uppercase tracking-wider text-brandRed border-bottom border-2 border-danger bg-white shadow-none">Login</button>
+        <button id="tab-btn-register" onclick="toggleAuthTab('register')" class="btn flex-fill py-3 rounded-0 text-xs fw-bold text-uppercase tracking-wider text-slate-500 shadow-none border-bottom border-2 border-transparent">Register</button>
+      </div>
+
+      <div class="p-4">
+        <form id="login-form" onsubmit="handleLoginSubmit(event)" novalidate>
+          <div class="mb-3">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Email Address *</label>
+            <input type="email" id="login-email" placeholder="student@example.com" class="form-control py-2 text-xs border-slate-300">
+            <span id="err-login-email" class="error-msg"></span>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Password *</label>
+            <input type="password" id="login-pass" placeholder="••••••••" class="form-control py-2 text-xs border-slate-300">
+            <span id="err-login-pass" class="error-msg"></span>
+          </div>
+
+          <button type="submit" class="btn bg-brandRed text-white w-100 fw-bold py-2 text-xs text-uppercase tracking-wider shadow-sm">
+            Sign In
+          </button>
+        </form>
+
+        <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="hidden" novalidate>
+          <div class="mb-2">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Full Name *</label>
+            <input type="text" id="reg-name" placeholder="Himani Kamerkar" class="form-control py-1 text-xs border-slate-300">
+            <span id="err-reg-name" class="error-msg"></span>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Email Address *</label>
+            <input type="email" id="reg-email" placeholder="himani@example.com" class="form-control py-1 text-xs border-slate-300">
+            <span id="err-reg-email" class="error-msg"></span>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Mobile Phone *</label>
+            <input type="tel" id="reg-phone" placeholder="9876543210" class="form-control py-1 text-xs border-slate-300">
+            <span id="err-reg-phone" class="error-msg"></span>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Password *</label>
+              <input type="password" id="reg-pass" placeholder="••••••••" class="form-control py-1 text-xs border-slate-300">
+              <span id="err-reg-pass" class="error-msg"></span>
+            </div>
+            <div class="col-6">
+              <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Confirm *</label>
+              <input type="password" id="reg-confirm-pass" placeholder="••••••••" class="form-control py-1 text-xs border-slate-300">
+              <span id="err-reg-confirm-pass" class="error-msg"></span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn bg-brandOrange text-white w-100 fw-bold py-2 text-xs text-uppercase tracking-wider shadow-sm">
+            Create Account
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="booking-modal" class="custom-modal-overlay hidden">
+    <div class="bg-white w-100 rounded-3 shadow-lg overflow-hidden border border-orange-100" style="max-width: 500px;">
+      <div class="bg-gradient-brand text-white p-4 d-flex justify-content-between align-items-center">
+        <div>
+          <h3 class="fs-5 fw-bolder text-uppercase tracking-tight mb-0">Equipment Rental Booking</h3>
+          <p class="text-xs text-white-50 mb-0">Complete reservation dates and details</p>
+        </div>
+        <button onclick="closeBookingModal()" class="btn-close btn-close-white shadow-none"></button>
+      </div>
+
+      <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="p-4" novalidate>
+        <div class="mb-3">
+          <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Customer Full Name *</label>
+          <input type="text" id="book-user-name" placeholder="Himani Kamerkar" class="form-control py-2 text-xs border-slate-300">
+          <span id="err-book-user-name" class="error-msg"></span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Selected Equipment *</label>
+          <select id="book-equip-select" onchange="updateBookingCostPreview()" class="form-select py-2 text-xs border-slate-300 bg-white">
+            <option value="">-- Select Item --</option>
+          </select>
+          <span id="err-book-equip-select" class="error-msg"></span>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">Start Date *</label>
+            <input type="date" id="book-start-date" onchange="updateBookingCostPreview()" class="form-control py-2 text-xs border-slate-300">
+            <span id="err-book-start-date" class="error-msg"></span>
+          </div>
+
+          <div class="col-6">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-slate-700 mb-1">End Date *</label>
+            <input type="date" id="book-end-date" onchange="updateBookingCostPreview()" class="form-control py-2 text-xs border-slate-300">
+            <span id="err-book-end-date" class="error-msg"></span>
+          </div>
+        </div>
+
+        <div class="bg-orange-50 p-3 rounded-3 border border-orange-200 d-flex justify-content-between align-items-center text-xs mb-4">
+          <div>
+            <span class="text-slate-500 d-block mb-1">Total Days: <strong id="preview-days" class="text-slate-800">0 Days</strong></span>
+            <span class="text-slate-500 d-block">Daily Rate: <strong id="preview-rate" class="text-slate-800">₹0 / day</strong></span>
+          </div>
+          <div class="text-end">
+            <span class="text-uppercase tracking-wider text-slate-500 d-block fw-bold" style="font-size: 10px;">Estimated Cost</span>
+            <span class="fs-4 fw-bolder text-brandRed" id="preview-total">₹0</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn bg-gradient-brand text-white w-100 fw-bold py-2 text-xs text-uppercase tracking-wider shadow-sm">
+          Confirm Rental Booking
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3 z-3">
+    <div id="bs-toast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body d-flex align-items-center gap-2">
+          <i class="fa-solid fa-circle-check text-warning fs-5"></i>
+          <div>
+            <strong class="d-block" id="toast-title">Notification</strong>
+            <span id="toast-message" style="font-size: 0.8rem;">Action performed successfully.</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact-section" class="bg-slate-900 text-white pt-5 pb-3 border-top border-4 border-danger mt-auto">
+    <div class="container border-bottom border-secondary pb-4 mb-3">
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="bg-brandRed rounded d-flex align-items-center justify-content-center text-white" style="width: 32px; height: 32px;">
+              <i class="fa-solid fa-tractor"></i>
+            </div>
+            <span class="fs-5 fw-bolder tracking-tight">EquipEase</span>
+          </div>
+          <p class="text-xs text-white-50 lh-base">
+            Agriculture & Industrial Equipment Rental Management Platform. Designed for colleges, studios, and businesses to optimize booking workflow.
+          </p>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <h4 class="fw-bold text-sm text-uppercase tracking-wider text-brandOrange mb-3">Quick Links</h4>
+          <ul class="list-unstyled text-xs space-y-2 mb-0">
+            <li class="mb-2"><a href="index.html" class="text-white-50 text-decoration-none">Home Page</a></li>
+            <li class="mb-2"><a href="#catalog" class="text-white-50 text-decoration-none">Equipment Catalog</a></li>
+            <li class="mb-2"><a href="dashboard.html" class="text-white-50 text-decoration-none">Customer Dashboard</a></li>
+            <li><a href="admin.html" class="text-white-50 text-decoration-none">Admin Control Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <h4 class="fw-bold text-sm text-uppercase tracking-wider text-brandOrange mb-3">Have Questions?</h4>
+          <div class="text-xs text-white-50 d-flex flex-column gap-2">
+            <span class="d-flex align-items-center gap-2"><i class="fa-solid fa-location-dot text-brandRed"></i> #890 CFG Apartment, Mayur Vihar, Delhi - India</span>
+            <span class="d-flex align-items-center gap-2"><i class="fa-solid fa-phone text-brandRed"></i> +91 7894561239</span>
+            <span class="d-flex align-items-center gap-2"><i class="fa-solid fa-envelope text-brandRed"></i> info@equipease.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container text-center text-md-start d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 text-white-50 text-xs">
+      <p class="mb-0">© 2026 EquipEase Rental Management System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JS Dependencies -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="script" src="js/app.js"></script>
+<script type="module" src="js/app1.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAdminBookings();
+    });
+  </script>
+</body>
+</html>

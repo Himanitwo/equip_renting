@@ -1,0 +1,25 @@
+/* Modal Backdrop Overlay */
+.custom-modal-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050; /* High z-index to stay above page content */
+}
+
+/* Modal Window Content Box */
+.modal-content-box {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  z-index: 1051;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}

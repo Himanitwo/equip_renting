@@ -1,0 +1,36 @@
+:root {
+  --brand-orange: #D95D0F;
+  --brand-orange-hover: #B84A07;
+  --brand-cream: #FDF7F2;
+  --brand-border: #F3E8DF;
+  --brand-dark: #1F2937;
+}
+
+/* Brand Colors */
+.bg-brand-orange { background-color: var(--brand-orange) !important; }
+.text-brand-orange { color: var(--brand-orange) !important; }
+.border-brand-orange { border-color: var(--brand-orange) !important; }
+
+.bg-brand-cream { background-color: var(--brand-cream) !important; }
+.border-brand-cream { border-color: var(--brand-border) !important; }
+
+.bg-brand-dark { background-color: var(--brand-dark) !important; }
+.text-brand-dark { color: var(--brand-dark) !important; }
+
+.btn-brand-orange {
+  background-color: var(--brand-orange);
+  color: #ffffff;
+  border: none;
+}
+.btn-brand-orange:hover {
+  background-color: var(--brand-orange-hover);
+  color: #ffffff;
+}
+
+/* Font Utilities */
+.text-xs { font-size: 0.75rem !important; }
+.text-sm { font-size: 0.875rem !important; }
+.tracking-tight { letter-spacing: -0.025em; }
+.tracking-wider { letter-spacing: 0.05em; }
+.tracking-widest { letter-spacing: 0.1em; }
+.fw-extrabold { font-weight: 800; }
