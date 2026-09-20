@@ -13,17 +13,23 @@ import './App.css';
 
 export default function App() {
   const [activePage, setActivePage] = useState('home');
+  const [user, setUser] = useState(null);
   const [authModal, setAuthModal] = useState({ open: false, tab: 'login' });
   const [bookingModal, setBookingModal] = useState({ open: false, equipId: null });
   const [toast, setToast] = useState({ visible: false, title: '', message: '' });
 
-  const [equipmentList, setEquipmentList] = useState([
-    { id: 1, name: 'Wolf Garten Mower', category: 'Agriculture', rate: 500, status: 'Available', img: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80' },
-    { id: 2, name: 'Sony FX3 Cinema Camera', category: 'Photography', rate: 1200, status: 'Available', img: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' },
-    { id: 3, name: 'JBL Line Array Speakers', category: 'AudioVisual', rate: 1500, status: 'Available', img: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=400&q=80' }
-  ]);
+  const [equipmentList, setEquipmentList] = useState([]);
 
+  // Restore Session on App Load
   useEffect(() => {
+    const savedUser = localStorage.getItem('user_session');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        localStorage.removeItem('user_session');
+      }
+    }
     fetchEquipment();
   }, []);
 
@@ -34,16 +40,38 @@ export default function App() {
       if (Array.isArray(data) && data.length > 0) {
         setEquipmentList(data);
       }
-    } catch {
-      // Fallback to static items if endpoint is offline
+    } catch (err) {
+      console.error('Failed to load equipment:', err);
     }
+  };
+
+  // Login Handler & Directing by Role
+  const handleLoginSuccess = (userData, token) => {
+    localStorage.setItem('user_session', JSON.stringify(userData));
+    localStorage.setItem('auth_token', token);
+    setUser(userData);
+
+    if (userData.role === 'admin') {
+      setActivePage('admin');
+    } else {
+      setActivePage('customer');
+    }
+
+    showToast('Welcome', `Logged in as ${userData.name}`);
+  };
+
+  // Logout Handler
+  const handleLogout = () => {
+    localStorage.removeItem('user_session');
+    localStorage.removeItem('auth_token');
+    setUser(null);
+    setActivePage('home');
+    showToast('Logged Out', 'You have been successfully logged out.');
   };
 
   const showToast = (title, message) => {
     setToast({ visible: true, title, message });
-    setTimeout(() => {
-      setToast({ visible: false, title: '', message: '' });
-    }, 4000);
+    setTimeout(() => setToast({ visible: false, title: '', message: '' }), 4000);
   };
 
   return (
@@ -51,10 +79,13 @@ export default function App() {
       <Navbar
         activePage={activePage}
         setActivePage={setActivePage}
+        user={user}
+        onLogout={handleLogout}
         openAuthModal={(tab) => setAuthModal({ open: true, tab })}
         openBookingModal={() => setBookingModal({ open: true, equipId: null })}
       />
 
+      {/* Home Route */}
       {activePage === 'home' && (
         <Home
           equipmentList={equipmentList}
@@ -63,24 +94,44 @@ export default function App() {
         />
       )}
 
+      {/* Customer Dashboard Route */}
       {activePage === 'customer' && (
-        <CustomerDashboard
-          openBookingModal={() => setBookingModal({ open: true, equipId: null })}
-          showToast={showToast}
-        />
+        user ? (
+          <CustomerDashboard
+            user={user}
+            openBookingModal={() => setBookingModal({ open: true, equipId: null })}
+            showToast={showToast}
+          />
+        ) : (
+          <div className="container py-5 text-center">
+            <h2>Access Restricted</h2>
+            <p className="text-muted">Please log in to access your customer dashboard.</p>
+            <button className="btn btn-primary" onClick={() => setAuthModal({ open: true, tab: 'login' })}>
+              Log In Now
+            </button>
+          </div>
+        )
       )}
 
+      {/* Admin Dashboard Route */}
       {activePage === 'admin' && (
-        <AdminDashboard showToast={showToast} />
+        user && user.role === 'admin' ? (
+          <AdminDashboard showToast={showToast} />
+        ) : (
+          <div className="container py-5 text-center">
+            <h2>Unauthorized</h2>
+            <p className="text-danger">Administrator privileges are required to access this area.</p>
+          </div>
+        )
       )}
 
       <Footer setActivePage={setActivePage} />
 
-      {/* Global Modals & Notifications */}
       <AuthModal
         isOpen={authModal.open}
         initialTab={authModal.tab}
         onClose={() => setAuthModal({ ...authModal, open: false })}
+        onLoginSuccess={handleLoginSuccess}
         showToast={showToast}
       />
 

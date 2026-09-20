@@ -9,6 +9,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->safeLoad();
 
 require __DIR__ . '/../config/db.php';
+require __DIR__ . '/../config/auth.php';
 
 \Stripe\Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
